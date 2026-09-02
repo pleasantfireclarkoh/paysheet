@@ -242,8 +242,17 @@ async function emailAndPrint(event) {
       attachmentFilename: reportFilename(),
       pdfBase64
     });
-    setStatus(`Report emailed to ${result.recipient || "the Apps Script owner"}. Opening ${settings.printerName || "the printer"} print dialog…`, "success");
-    setTimeout(() => window.print(), 350);
+    const recipient = result.recipient || "the Apps Script owner";
+    const printerName = result.print?.printerName || settings.printerName || "the printer";
+    if (result.print?.ok) {
+      setStatus(`Report emailed to ${recipient} and queued for automatic printing on ${printerName}.`, "success");
+    } else {
+      const reason = result.print?.configured === false
+        ? "Cloud printing is not configured yet"
+        : `Cloud printing failed${result.print?.error ? `: ${result.print.error}` : ""}`;
+      setStatus(`Report emailed to ${recipient}. ${reason}; opening the normal print window instead.`, "error");
+      setTimeout(() => window.print(), 350);
+    }
   } catch (error) {
     console.error(error);
     const detail = error?.text || error?.message || "Unknown email error";
