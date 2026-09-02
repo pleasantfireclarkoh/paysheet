@@ -2,6 +2,8 @@
 
 This is a static web app designed for GitHub Pages. It reproduces the Pleasant Township Fire Department incident sheet as a one-page US Letter report, keeps an in-progress draft on the device, creates a PDF, emails it through Google Apps Script, and then opens printing.
 
+Public address: `https://pleasantfireclarkoh.gov/paysheet`
+
 ## How delivery works
 
 The Google Apps Script project runs as its owner. When a report is submitted, it:
@@ -10,7 +12,7 @@ The Google Apps Script project runs as its owner. When a report is submitted, it
 2. Sends the completed report from the Google account that owns the script.
 3. Sends the primary copy to `ptfdclarkoh@gmail.com`.
 4. Attaches the exact one-page report as a PDF.
-5. Confirms success to the web app. Printing starts only after that confirmation.
+5. Records a short-lived status for that specific submission. The website checks that status, and printing starts only after Google records success.
 
 ## Create the Google Apps Script mailer
 
@@ -18,7 +20,7 @@ The Google Apps Script project runs as its owner. When a report is submitted, it
 2. Open [Google Apps Script](https://script.google.com/) and create a **New project**.
 3. Delete the starter code and paste in everything from `GoogleAppsScript.gs`.
 4. `PRIMARY_RECIPIENT` is already set to `ptfdclarkoh@gmail.com`. Change it only if the department's destination changes.
-5. After the GitHub Pages site is published, set `ALLOWED_ORIGIN` to its origin. For a normal project site this is `https://YOUR-USERNAME.github.io`—do not add the repository path or a trailing slash.
+5. `ALLOWED_ORIGIN` is set to `https://pleasantfireclarkoh.gov`. The `/paysheet` path is intentionally not included because browser origins contain only the scheme and hostname.
 6. Save the project and name it **PTFD Incident Report Mailer**.
 7. Choose **Deploy → New deployment → Web app**.
 8. Set **Execute as** to **Me**. Choose the narrowest access option that still covers the people who will use the incident form. A Google Workspace organization-only deployment is preferable when everyone has a department account.
@@ -58,8 +60,8 @@ Kiosk printing sends the report to the workstation's default printer, so the dep
 1. Create a GitHub repository and upload `index.html`, `styles.css`, `app.js`, `config.js`, `GoogleAppsScript.gs`, and `PTFDLOGO.png`.
 2. In the repository, open **Settings → Pages**.
 3. Choose **Deploy from a branch**, select the main branch and `/ (root)`, then save.
-4. Copy the published origin into `SETTINGS.ALLOWED_ORIGIN` in Apps Script and redeploy it.
-5. Open the GitHub Pages site, complete **Google email setup**, and send a non-emergency test report.
+4. Confirm the final address is `https://pleasantfireclarkoh.gov/paysheet`.
+5. Open the published site and send a non-emergency test report.
 
 ## Security and operational notes
 

@@ -257,18 +257,56 @@ async function emailAndPrint(event) {
 function sendViaAppsScript(url, submission) {
   return new Promise((resolve, reject) => {
     const requestId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+    let settled = false;
+    let pollTimer;
+    let activeJsonp;
     const timeout = window.setTimeout(() => {
+      finish(new Error("Google did not confirm the email within 60 seconds."));
+    }, 60_000);
+
+    function finish(error, data) {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeout);
+      window.clearTimeout(pollTimer);
       window.removeEventListener("message", onMessage);
-      reject(new Error("Google did not confirm the email within 45 seconds."));
-    }, 45_000);
+      if (activeJsonp) activeJsonp.remove();
+      if (error) reject(error);
+      else resolve(data);
+    }
 
     function onMessage(event) {
       const allowedGoogleOrigin = event.origin === "https://script.google.com" || event.origin.endsWith(".googleusercontent.com");
       if (!allowedGoogleOrigin || event.data?.source !== "ptfd-apps-script" || event.data?.requestId !== requestId) return;
-      window.clearTimeout(timeout);
-      window.removeEventListener("message", onMessage);
-      if (event.data.ok) resolve(event.data);
-      else reject(new Error(event.data.error || "Google Apps Script could not send the report."));
+      if (event.data.ok) finish(null, event.data);
+      else finish(new Error(event.data.error || "Google Apps Script could not send the report."));
+    }
+
+    function pollStatus() {
+      if (settled) return;
+      const callbackName = `ptfdStatus_${requestId.replace(/[^a-zA-Z0-9]/g, "")}`;
+      window[callbackName] = (data) => {
+        delete window[callbackName];
+        if (activeJsonp) activeJsonp.remove();
+        activeJsonp = null;
+        if (data?.pending) {
+          pollTimer = window.setTimeout(pollStatus, 1500);
+        } else if (data?.ok) {
+          finish(null, data);
+        } else {
+          finish(new Error(data?.error || "Google Apps Script could not send the report."));
+        }
+      };
+      const separator = url.includes("?") ? "&" : "?";
+      activeJsonp = document.createElement("script");
+      activeJsonp.src = `${url}${separator}requestId=${encodeURIComponent(requestId)}&callback=${encodeURIComponent(callbackName)}&t=${Date.now()}`;
+      activeJsonp.onerror = () => {
+        delete window[callbackName];
+        if (activeJsonp) activeJsonp.remove();
+        activeJsonp = null;
+        pollTimer = window.setTimeout(pollStatus, 1800);
+      };
+      document.head.appendChild(activeJsonp);
     }
 
     window.addEventListener("message", onMessage);
@@ -294,6 +332,7 @@ function sendViaAppsScript(url, submission) {
     document.body.appendChild(postForm);
     postForm.submit();
     postForm.remove();
+    pollTimer = window.setTimeout(pollStatus, 1200);
   });
 }
 
