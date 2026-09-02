@@ -211,8 +211,29 @@ code { padding: 1px 4px; border-radius: 4px; background: #efeee9; }
 @page { size: Letter portrait; margin: 0; }
 
 @media print {
-  html, body { width: 8.5in; height: 11in; margin: 0; padding: 0; background: #fff; }
-  .no-print, .form-panel, .preview-toolbar { display: none !important; }
-  .app-layout, .preview-panel, .report-scroll { display: block; width: 8.5in; margin: 0; padding: 0; overflow: visible; background: #fff; }
-  .report-page { width: 8.5in; height: 11in; margin: 0; box-shadow: none; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  html, body { width: 8.5in; height: auto; min-height: 0; margin: 0; padding: 0; overflow: hidden; background: #fff; }
+  .no-print, .form-panel, .preview-toolbar, .submission-frame { display: none !important; }
+  .app-layout, .preview-panel, .report-scroll {
+    display: block;
+    width: 8.5in;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+  }
+  .report-page {
+    width: 8.5in;
+    height: calc(11in - 1px);
+    margin: 0;
+    overflow: hidden;
+    box-shadow: none;
+    break-inside: avoid-page;
+    break-after: avoid-page;
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }
