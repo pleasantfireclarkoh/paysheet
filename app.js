@@ -90,9 +90,27 @@ function formatDate(value) {
 
 function formatTime(value) {
   if (!value) return "";
-  const [hours, minutes] = value.split(":").map(Number);
-  const suffix = hours >= 12 ? "PM" : "AM";
-  return `${hours % 12 || 12}:${String(minutes).padStart(2, "0")} ${suffix}`;
+  const match = String(value).match(/^([01]\d|2[0-3]):([0-5]\d)$/);
+  return match ? `${match[1]}:${match[2]}` : String(value);
+}
+
+function setUp24HourInputs() {
+  document.querySelectorAll(".time-24-input").forEach((input) => {
+    input.addEventListener("input", () => {
+      const digits = input.value.replace(/\D/g, "").slice(0, 4);
+      input.value = digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits;
+      input.setCustomValidity("");
+    });
+
+    input.addEventListener("blur", () => {
+      if (input.value && !/^([01]\d|2[0-3]):[0-5]\d$/.test(input.value)) {
+        input.setCustomValidity("Enter a 24-hour time from 00:00 to 23:59.");
+        input.reportValidity();
+      } else {
+        input.setCustomValidity("");
+      }
+    });
+  });
 }
 
 function updateReport() {
@@ -362,6 +380,7 @@ function localDateValue() {
 
 buildPersonnelControls();
 buildPersonnelReport();
+setUp24HourInputs();
 restoreFormState(JSON.parse(localStorage.getItem(STORAGE_KEYS.draft) || "null"));
 if (!form.elements.incidentDate.value) form.elements.incidentDate.value = localDateValue();
 updateReport();

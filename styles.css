@@ -97,6 +97,9 @@ input, select {
 }
 
 input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(27,108,168,.22); border-color: var(--focus); }
+.time-24-input { font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.time-24-input::placeholder { color: #7b858c; letter-spacing: .08em; }
+.time-24-input:invalid:not(:placeholder-shown) { border-color: #b33a31; }
 .compound-input { display: flex; align-items: center; min-height: 42px; border: 1px solid #c8c8c3; border-radius: 8px; overflow: hidden; }
 .compound-input strong { padding-left: 11px; }
 .compound-input input { min-height: 40px; border: 0; border-radius: 0; padding-left: 3px; outline-offset: -3px; }
