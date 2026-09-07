@@ -14,16 +14,15 @@ const PERSONNEL_ROWS = [
   ["2775 Frank Ballard", "", ""]
 ];
 
+const INCIDENT_NUMBER_PREFIX = "26PL00";
+
 const STORAGE_KEYS = {
-  draft: "ptfd-incident-draft-v1",
-  settings: "ptfd-email-settings-v1"
+  draft: "ptfd-incident-draft-v1"
 };
 
 const form = document.querySelector("#incident-form");
 const statusMessage = document.querySelector("#status-message");
 const submitButton = document.querySelector("#submit-button");
-const settingsDialog = document.querySelector("#settings-dialog");
-const settingsForm = document.querySelector("#settings-form");
 
 function safeId(value) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -148,27 +147,17 @@ function setStatus(message, type = "") {
 }
 
 function currentSettings() {
-  const deployed = window.PTFD_CONFIG || {};
-  const local = JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || "{}");
-  return { ...deployed, ...Object.fromEntries(Object.entries(local).filter(([, value]) => value)) };
+  return window.PTFD_CONFIG || {};
 }
 
 function settingsAreComplete(settings) {
   return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(settings.appsScriptWebAppUrl || "");
 }
 
-function openSettings() {
-  const settings = currentSettings();
-  for (const [key, value] of Object.entries(settings)) {
-    if (settingsForm.elements[key]) settingsForm.elements[key].value = value || "";
-  }
-  settingsDialog.showModal();
-}
-
 function reportText(state) {
   const types = state.incidentType.join(", ") || "Not marked";
   return [
-    `Incident Number: 25-${state.incidentNumber || ""}`,
+    `Incident Number: ${INCIDENT_NUMBER_PREFIX}${state.incidentNumber || ""}`,
     `Date: ${formatDate(state.incidentDate)}`,
     `Type: ${types}`,
     `Scene Address: ${state.sceneAddress || ""}`,
@@ -210,7 +199,7 @@ async function generatePdf() {
 
 function reportFilename() {
   const number = form.elements.incidentNumber.value.trim() || "draft";
-  return `PTFD-Incident-25-${number}.pdf`;
+  return `PTFD-Incident-${INCIDENT_NUMBER_PREFIX}${number}.pdf`;
 }
 
 async function downloadPdf() {
@@ -240,8 +229,7 @@ async function emailAndPrint(event) {
 
   const settings = currentSettings();
   if (!settingsAreComplete(settings)) {
-    setStatus("Complete Google email setup before submitting.", "error");
-    openSettings();
+    setStatus("Email delivery is not configured. Contact the site administrator.", "error");
     return;
   }
   submitButton.disabled = true;
@@ -252,7 +240,7 @@ async function emailAndPrint(event) {
     const pdf = await generatePdf();
     const pdfBase64 = pdf.output("datauristring").split(",")[1];
     const result = await sendViaAppsScript(settings.appsScriptWebAppUrl, {
-      incidentNumber: `25-${state.incidentNumber}`,
+      incidentNumber: `${INCIDENT_NUMBER_PREFIX}${state.incidentNumber}`,
       incidentDate: formatDate(state.incidentDate),
       incidentType: state.incidentType.join(", "),
       sceneAddress: state.sceneAddress,
@@ -398,14 +386,3 @@ form.addEventListener("submit", emailAndPrint);
 document.querySelector("#download-button").addEventListener("click", downloadPdf);
 document.querySelector("#print-button").addEventListener("click", () => { updateReport(); window.print(); });
 document.querySelector("#clear-button").addEventListener("click", clearForm);
-document.querySelector("#settings-button").addEventListener("click", openSettings);
-document.querySelector("#settings-close").addEventListener("click", () => settingsDialog.close());
-document.querySelector("#settings-cancel").addEventListener("click", () => settingsDialog.close());
-
-settingsForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const values = Object.fromEntries(new FormData(settingsForm));
-  localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(values));
-  settingsDialog.close();
-  setStatus("Email setup saved on this device.", "success");
-});

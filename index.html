@@ -21,7 +21,6 @@
         <p class="eyebrow">Pleasant Township Fire Department</p>
         <h1>Incident Paysheet</h1>
       </div>
-      <button class="button button-quiet header-settings" id="settings-button" type="button">Google email setup</button>
     </header>
 
     <main class="app-layout">
@@ -40,7 +39,7 @@
             <div class="field-grid field-grid-2">
               <label class="field">
                 <span>Incident number</span>
-                <span class="compound-input"><strong>26-</strong><input id="incident-number" name="incidentNumber" inputmode="numeric" autocomplete="off" required /></span>
+                <span class="compound-input"><strong>26PL00</strong><input id="incident-number" name="incidentNumber" inputmode="numeric" autocomplete="off" required /></span>
               </label>
               <label class="field">
                 <span>Date</span>
@@ -157,7 +156,7 @@
             </header>
 
             <div class="report-line report-incident-line">
-              <span>Incident Number: <strong>26-</strong><span class="fill fill-incident" data-output="incidentNumber"></span></span>
+              <span>Incident Number: <strong>26PL00</strong><span class="fill fill-incident" data-output="incidentNumber"></span></span>
               <span class="report-types"><span data-check="FIRE">[&nbsp;&nbsp;]</span> FIRE <span data-check="EMS">[&nbsp;&nbsp;]</span> EMS <span data-check="MVA">[&nbsp;&nbsp;]</span> MVA</span>
             </div>
             <div class="report-line report-date-line">
@@ -223,24 +222,6 @@
         </div>
       </aside>
     </main>
-
-    <dialog id="settings-dialog" class="settings-dialog no-print">
-      <form method="dialog" id="settings-form">
-        <div class="dialog-heading">
-          <div>
-            <p class="step-label">One-time setup</p>
-            <h2>Google email delivery</h2>
-          </div>
-          <button class="icon-button" id="settings-close" type="button" aria-label="Close settings">×</button>
-        </div>
-        <p class="dialog-copy">Paste the deployed Google Apps Script web-app URL. The Google account that owns the script is used as the sender and primary recipient.</p>
-        <label class="field"><span>Apps Script web-app URL</span><input type="url" name="appsScriptWebAppUrl" placeholder="https://script.google.com/macros/s/…/exec" required /></label>
-        <div class="dialog-actions">
-          <button class="button button-quiet" id="settings-cancel" type="button">Cancel</button>
-          <button class="button button-primary" type="submit" value="default">Save setup</button>
-        </div>
-      </form>
-    </dialog>
 
     <iframe class="submission-frame" name="ptfd-apps-script-response" id="submission-frame" title="Email submission response"></iframe>
   </body>

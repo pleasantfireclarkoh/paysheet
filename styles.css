@@ -48,11 +48,10 @@ button { cursor: pointer; }
   filter: drop-shadow(0 3px 7px rgba(39, 8, 5, .28));
 }
 
-.app-header h1, .panel-intro h2, .preview-toolbar h2, .dialog-heading h2 { margin: 0; }
+.app-header h1, .panel-intro h2, .preview-toolbar h2 { margin: 0; }
 .app-header h1 { font-family: Georgia, serif; font-size: clamp(21px, 3vw, 29px); }
 .eyebrow, .step-label { margin: 0 0 2px; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 800; }
 .eyebrow { color: rgba(255,255,255,.76); }
-.header-settings { margin-left: auto; color: #fff !important; border-color: rgba(255,255,255,.35) !important; }
 
 .app-layout {
   display: grid;
@@ -62,9 +61,9 @@ button { cursor: pointer; }
 
 .form-panel { padding: 30px clamp(22px, 3vw, 48px) 50px; background: var(--panel); }
 .preview-panel { min-width: 0; padding: 30px clamp(18px, 2vw, 34px) 50px; }
-.panel-intro, .preview-toolbar, .dialog-heading, .form-actions, .dialog-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.panel-intro, .preview-toolbar, .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .step-label { color: var(--brand); }
-.panel-intro h2, .preview-toolbar h2, .dialog-heading h2 { font: 700 25px/1.2 Georgia, serif; }
+.panel-intro h2, .preview-toolbar h2 { font: 700 25px/1.2 Georgia, serif; }
 .draft-state { color: var(--muted); font-size: 12px; }
 
 .form-section {
@@ -186,13 +185,6 @@ input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(27,108
 .report-pay { margin: 7px 20px 0 0; text-align: right; }
 .fill-pay { min-width: 73px; }
 
-.settings-dialog { width: min(520px, calc(100vw - 30px)); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 25px 80px rgba(0,0,0,.28); }
-.settings-dialog::backdrop { background: rgba(22,25,28,.55); backdrop-filter: blur(3px); }
-.settings-dialog form { padding: 24px; }
-.settings-dialog .field { margin-top: 15px; }
-.dialog-copy { color: var(--muted); line-height: 1.5; font-size: 14px; }
-.dialog-actions { margin-top: 22px; justify-content: flex-end; }
-.icon-button { width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; background: #f1efea; font-size: 26px; }
 code { padding: 1px 4px; border-radius: 4px; background: #efeee9; }
 .submission-frame { position: fixed; width: 1px; height: 1px; right: 0; bottom: 0; border: 0; opacity: 0; pointer-events: none; }
 
