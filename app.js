@@ -16,10 +16,6 @@ const PERSONNEL_ROWS = [
 
 const INCIDENT_NUMBER_PREFIX = "26PL00";
 
-const STORAGE_KEYS = {
-  draft: "ptfd-incident-draft-v1"
-};
-
 const form = document.querySelector("#incident-form");
 const statusMessage = document.querySelector("#status-message");
 const submitButton = document.querySelector("#submit-button");
@@ -64,21 +60,6 @@ function getFormState() {
   state.personnel ||= [];
   state.daycrew ||= [];
   return state;
-}
-
-function restoreFormState(state) {
-  if (!state) return;
-  for (const element of form.elements) {
-    if (!element.name) continue;
-    const value = state[element.name];
-    if (element.type === "checkbox") {
-      element.checked = Array.isArray(value) && value.includes(element.value);
-    } else if (element.type === "radio") {
-      element.checked = value === element.value;
-    } else if (typeof value === "string") {
-      element.value = value;
-    }
-  }
 }
 
 function formatDate(value) {
@@ -133,12 +114,6 @@ function updateReport() {
     cell.querySelector(".person-check").textContent = state.personnel.includes(name) ? "[X]" : "[  ]";
     cell.querySelector(".report-person-name").classList.toggle("daycrew-circle", state.daycrew.includes(name));
   });
-}
-
-function saveDraft() {
-  localStorage.setItem(STORAGE_KEYS.draft, JSON.stringify(getFormState()));
-  const draftState = document.querySelector("#draft-state");
-  draftState.textContent = "Draft saved locally";
 }
 
 function setStatus(message, type = "") {
@@ -353,11 +328,20 @@ function sendViaAppsScript(url, submission) {
 
 function clearForm() {
   if (!window.confirm("Clear every field in this incident report?")) return;
-  form.reset();
-  localStorage.removeItem(STORAGE_KEYS.draft);
-  if (!form.elements.incidentDate.value) form.elements.incidentDate.value = localDateValue();
-  updateReport();
+  resetFormFields();
   setStatus("Form cleared.");
+}
+
+function resetFormFields() {
+  form.reset();
+  form.elements.incidentDate.value = localDateValue();
+  updateReport();
+}
+
+function startFreshForm() {
+  localStorage.removeItem("ptfd-incident-draft-v1");
+  resetFormFields();
+  setStatus("");
 }
 
 function localDateValue() {
@@ -369,9 +353,8 @@ function localDateValue() {
 buildPersonnelControls();
 buildPersonnelReport();
 setUp24HourInputs();
-restoreFormState(JSON.parse(localStorage.getItem(STORAGE_KEYS.draft) || "null"));
-if (!form.elements.incidentDate.value) form.elements.incidentDate.value = localDateValue();
-updateReport();
+startFreshForm();
+window.addEventListener("pageshow", startFreshForm);
 
 form.addEventListener("input", (event) => {
   if (event.target.name === "daycrew" && event.target.checked) {
@@ -379,9 +362,8 @@ form.addEventListener("input", (event) => {
     if (attendance) attendance.checked = true;
   }
   updateReport();
-  saveDraft();
 });
-form.addEventListener("change", () => { updateReport(); saveDraft(); });
+form.addEventListener("change", updateReport);
 form.addEventListener("submit", emailAndPrint);
 document.querySelector("#download-button").addEventListener("click", downloadPdf);
 document.querySelector("#print-button").addEventListener("click", () => { updateReport(); window.print(); });

@@ -30,7 +30,7 @@
             <p class="step-label">Incident entry</p>
             <h2 id="entry-title">Complete the call record</h2>
           </div>
-          <span class="draft-state" id="draft-state">Draft saved locally</span>
+          <span class="draft-state">Form clears on refresh</span>
         </div>
 
         <form id="incident-form" novalidate>
@@ -63,16 +63,16 @@
             <p class="section-help" id="timeline-time-help">Enter each time in 24-hour format (HH:MM), such as 14:30.</p>
             <div class="timeline-grid">
               <label class="field"><span>Call received</span><input class="time-24-input" name="callReceived" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>On scene</span><input class="time-24-input" name="onScene" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>EMS leave ER</span><input class="time-24-input" name="emsLeaveEr" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
               <label class="field"><span>Call dispatched</span><input class="time-24-input" name="callDispatched" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>EMS at patient</span><input class="time-24-input" name="emsAtPatient" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>In service</span><input class="time-24-input" name="inService" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
               <label class="field"><span>Enroute</span><input class="time-24-input" name="enroute" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>EMS enroute to ER</span><input class="time-24-input" name="emsEnrouteEr" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
-              <label class="field"><span>In quarters</span><input class="time-24-input" name="inQuarters" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
               <label class="field"><span>Canceled</span><input class="time-24-input" name="canceled" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>On scene</span><input class="time-24-input" name="onScene" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>EMS at patient</span><input class="time-24-input" name="emsAtPatient" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>EMS enroute to ER</span><input class="time-24-input" name="emsEnrouteEr" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
               <label class="field"><span>EMS arrive at ER</span><input class="time-24-input" name="emsArriveEr" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>EMS leave ER</span><input class="time-24-input" name="emsLeaveEr" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>In service</span><input class="time-24-input" name="inService" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
+              <label class="field"><span>In quarters</span><input class="time-24-input" name="inQuarters" inputmode="numeric" autocomplete="off" placeholder="HH:MM" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" title="Enter a 24-hour time from 00:00 to 23:59" aria-describedby="timeline-time-help" /></label>
             </div>
           </fieldset>
 
