@@ -175,7 +175,7 @@ input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(27,108
 .report-personnel { width: calc(100% - 8px); margin: 16px 4px 0; border-collapse: collapse; table-layout: fixed; font: 14.5px/1 Arial, sans-serif; }
 .report-personnel td { width: 33.333%; height: 19px; padding: 1px 3px; border: .75px solid #000; white-space: nowrap; overflow: hidden; }
 .person-check { display: inline-block; width: 27px; font-family: "Times New Roman", serif; }
-.daycrew-circle { display: inline-block; border: 1.5px solid #000; border-radius: 50%; padding: 1px 5px; margin: -2px -5px; }
+.daycrew-circle { display: inline-block; border: 2.5px solid #000; border-radius: 50%; padding: 1px 5px; margin: -2px -5px; font-weight: 700; }
 
 .report-instructions { position: relative; margin-top: 22px; font-size: 16px; }
 .report-instructions p { margin: 0 0 13px; }
